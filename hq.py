@@ -7,11 +7,10 @@ import re
 import multiprocessing
 import threading
 import concurrent
-import datetime
 
 BOT_OWNER_ROLE = 'RUNNER' # change to what you need
 #BOT_OWNER_ROLE_ID = "554283064822333441"
-now = datetime.datetime.now()  
+ 
  
 
  
