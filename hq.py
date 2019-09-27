@@ -179,8 +179,8 @@ class Bot(discord.Client):
         self.embed.add_field(name="**__Option 2__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 3__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
-        self.embed.set_footer(text=f"Bot made by BabluTJ_v2.20", \
-            icon_url="https://cdn.discordapp.com/attachments/600721736098643991/608901532091547668/Screenshot_20190808112708.jpg")
+        self.embed.set_footer(text=f"Bot made by MATRICKS", \
+            icon_url="")
         # await self.bot.add_reaction(embed,':Trivia_King_Official_Logo:')
 
 
@@ -259,7 +259,7 @@ class Bot(discord.Client):
 
         await self.clear_results()
         await self.update_embeds()
-        await self.change_presence(activity=discord.Game(name='With BabluTJ_v2.20'))
+        #await self.change_presence(activity=discord.Game(name='With BabluTJ_v2.20'))
 
     async def on_message(self, message):
 
