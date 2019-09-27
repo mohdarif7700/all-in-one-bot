@@ -15,13 +15,13 @@ BOT_OWNER_ROLE = 'RUNNER' # change to what you need
 
  
 oot_channel_id_list = [
-    "623823944549662724", #trivia king
-	"613735885460209694", #loco galaxy
-    "607613349491900436", #loco sudy iq
-    "595635734904307742", #loco tf2.0 
-	"620140094476517396", #loco ukt
-	"569420128794443776",#loco unt
-	"613744392968208403", #confetti gala
+    "595635734904307742", #trivia fire loco
+	"620842231229841421", #galaxy loco
+    "626992737018970112", #galaxy loco confetti
+    "626458458064945164", #study iq loco 
+	"620140094476517396", #ukt loco
+	"569502072945377290",#it loco
+	"569420128794443776", #unt loco
 	"590583414541910018",#confetti study
 	"605443517069656084",#confetti tf2.0
   "620140099346104325", #confetti ukt
@@ -284,7 +284,7 @@ class Bot(discord.Client):
           if BOT_OWNER_ROLE in [role.name for role in message.author.roles]:
            embed = discord.Embed(title="Help Commands", description="**How Run Bot**", color=0x00ff00)
            embed.add_field(name="Supported Game", value="**Loco\nBrainbaazi\nPollbaazi\nSwag-iq\nThe-Q\nConfett-India\nCash-Quiz-Live\nHQ Tivia\n\nJeetoh Answer For `+`**", inline=False)
-           embed.add_field(name="when Question come put command", value="** `-run` is command work for support game**", inline=False)
+           embed.add_field(name="when Question come put command", value="** `+` is command work for support game**", inline=False)
            await message.channel.send(embed=embed)
 
         # process votes
