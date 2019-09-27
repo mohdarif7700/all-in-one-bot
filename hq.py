@@ -7,10 +7,11 @@ import re
 import multiprocessing
 import threading
 import concurrent
+import datetime
 
 BOT_OWNER_ROLE = 'RUNNER' # change to what you need
 #BOT_OWNER_ROLE_ID = "554283064822333441"
-  
+now = datetime.datetime.now()  
  
 
  
@@ -136,7 +137,7 @@ class Bot(discord.Client):
         self.embed.add_field(name="**__Option 1__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 2__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 3__**", value="0", inline=False)
-        self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
+        #self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
         self.embed.set_footer(text=f"Developed By: MATRICKS GAMING ", \
             icon_url="")
         
