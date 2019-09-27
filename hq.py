@@ -139,7 +139,8 @@ class Bot(discord.Client):
         self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
         self.embed.set_footer(text=f"Developed By: **MATRICKS GAMING** ", \
             icon_url="")
-        await self.bot.add_reaction(embed,':check_button_green:')
+        
+await self.bot.add_reaction(embed,':check_button_green:')
 
 
     async def clear_results(self):
