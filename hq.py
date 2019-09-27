@@ -174,12 +174,12 @@ class Bot(discord.Client):
         self.answer_scores = answer_scores
 
         # embed creation
-        self.embed=discord.Embed(title="Google search", description="**__Searching google results for Confetti.__**")
+        self.embed=discord.Embed(title="Google search", description="**__DEEP SEARCHING FOR RESULTS....__**")
         self.embed.add_field(name="**__Option 1__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 2__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 3__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
-        self.embed.set_footer(text=f"Bot made by MATRICKS", \
+        self.embed.set_footer(text=f"Developed By MATRICKS GAMING ", \
             icon_url="")
         # await self.bot.add_reaction(embed,':Trivia_King_Official_Logo:')
 
@@ -284,7 +284,7 @@ class Bot(discord.Client):
           if BOT_OWNER_ROLE in [role.name for role in message.author.roles]:
            embed = discord.Embed(title="Help Commands", description="**How Run Bot**", color=0x00ff00)
            embed.add_field(name="Supported Game", value="**Loco\nBrainbaazi\nPollbaazi\nSwag-iq\nThe-Q\nConfett-India\nCash-Quiz-Live\nHQ Tivia\n\nJeetoh Answer For `+`**", inline=False)
-           embed.add_field(name="when Question come put command", value="** `+` is command work for support game**", inline=False)
+           embed.add_field(name="when Question come put command", value="** `-run` is command work for support game**", inline=False)
            await message.channel.send(embed=embed)
 
         # process votes
