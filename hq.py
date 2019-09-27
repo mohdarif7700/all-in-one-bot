@@ -140,7 +140,6 @@ class Bot(discord.Client):
         self.embed.set_footer(text=f"Developed By: **MATRICKS GAMING** ", \
             icon_url="")
         
-await self.bot.add_reaction(embed,':check_button_green:')
 
 
     async def clear_results(self):
@@ -208,6 +207,7 @@ await self.bot.add_reaction(embed,':check_button_green:')
 
         if self.embed_msg is not None:
             await self.embed_msg.edit(embed=self.embed)
+            await self.bot.add_reaction(self.embed,':check_button_green:')
 
     async def on_ready(self):
         print("==============")
