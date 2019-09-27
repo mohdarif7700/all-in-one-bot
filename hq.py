@@ -1,230 +1,344 @@
-﻿import discord
-import random
-# import sys
-# import os
-
+'''
+using discord.py version 1.0.0a
+'''
+import discord
 import asyncio
+import re
+import multiprocessing
+import threading
+import concurrent
 
-bot_channel_id = discord.Object(id='557047819832393739')
-oot_channel_id_list = ["557047819832393739","523359669280833536","580198028950896640","513818250652680213","459842150323060736","535628205139296256"]     
+BOT_OWNER_ROLE = 'RUNNER' # change to what you need
+#BOT_OWNER_ROLE_ID = "554283064822333441"
+  
+ 
+
+ 
+oot_channel_id_list = [
+    "623823944549662724", #trivia king
+	"613735885460209694", #loco galaxy
+    "607613349491900436", #loco sudy iq
+    "595635734904307742", #loco tf2.0 
+	"620140094476517396", #loco ukt
+	"569420128794443776",#loco unt
+	"613744392968208403", #confetti gala
+	"590583414541910018",#confetti study
+	"605443517069656084",#confetti tf2.0
+  "620140099346104325", #confetti ukt
+  "588070986554015764",#confetti unt
+	"523359669280833536", #hq tgl 
+  "580198028950896640", #hq trivia tribe
+	"513818250652680213", #hq trivia worl
+  "613746114016968806",#jeetoh galaxy
+  "593070663548403743", #jeetoh study
+  "595636121124208640", #jeetoh tf2.0
+  "620140095181291521",#jeetoh ukt
+  "595654063870181386", #jeetoh unt
+	"585618493093969923", # swag iq tgl
+	"446448437119025154", #sawg iq tgl
+    "558136902885048329",
+    "588739972354408532",
+    "588325679108456468",
+    "570257859850272788",
+    "588325025040564225",
+    "588748255106433045",
+	"587984504564482054",
+	"587984118059499560",
+	"586830578653855744",
+	"588739972354408532",
+	"587984347496185866",
+    "588325341563715589",
+	"590182635653824542",
+	"590182835948879872",
+	"590224806256050196",
+	"590228259937976321",
+	"590074352607690762",
+	"590074693097095168",
+	"590109407950667776",
+	"590074894738259979",
+	"591079879982841856",
+	"591067917123190804",
+	"591186950057361409",
+	"590926548174110730",
+"590583414541910018"
+	"593460363349983233",
+	"593070663548403743",
+	"593990638329004032",
+	"595654063870181386",
+	"595636121124208640",
+"619972234081075221"
+]
 
 
-sent_new_message = False
-answer_scores = {
-    "1": 0,
-    "2": 0,
-    "3": 0,
-   
-}
-answer_scores_last = {
-    "1": 0,
-    "2": 0,
-    "3": 0,
+answer_pattern = re.compile(r'(not|n)?([1-4]{1})(\?)?(cnf)?(\?)?$', re.IGNORECASE)
 
-}
-# def restart_program():
-#     """Restarts the current program.
-#     Note: this function does not return. Any cleanup action (like
-#     saving data) must be done before calling this function."""
-#     python = sys.executable
-#     os.execl(python, python, * sys.argv)
-apgscore = 160
-nomarkscore = 80
-markscore = 40
+apgscore = 500
+nomarkscore = 400
+markscore = 300
 
-bot = discord.Client()
-selfbot = discord.Client()
+async def update_scores(content, answer_scores):
+    global answer_pattern
 
-@bot.event
-async def on_ready():
-    
-    print("Connected to discord.")
-    
-    await bot.send_message(bot_channel_id, "**READY```Bot has updated... Start running ```** ")
-   
+    m = answer_pattern.match(content)
+    if m is None:
+        return False
 
-   
+    ind = int(m[2])-1
 
-@bot.event
-async def on_message(message):
-    global sent_new_message
-    global answer
-    global wrong
-    global answer_scores
-    global answer_scores_last
+    if m[1] is None:
+        if m[3] is None:
+            if m[4] is None:
+                answer_scores[ind] += nomarkscore
+            else: # apg
+                if m[5] is None:
+                    answer_scores[ind] += apgscore
+                else:
+                    answer_scores[ind] += markscore
 
-    if message.server == None:
-        return
-    if message.content.lower() == "-h":
-       if "554283064822333441" in [role.id for role in message.author.roles]:
-           sent_new_message =False
-           answer_scores = {
-                "1": 0,
-                "2": 0,
-                "3": 0,
-           }
-           wrong = " "
-           answer = " " 
-           
+        else: # 1? ...
+            answer_scores[ind] += markscore
 
-@selfbot.event
-async def on_ready():
-    
-    print("Connected to discord.")
-    
-@selfbot.event
-async def on_message(message):
-    global answer_scores
-    
-    global answer
-    global wrong
-
-    if message.server == None:
-        return
-
-   
-    if message.channel.id in oot_channel_id_list:
-        content = message.content.lower().replace(' ', '').replace("'", "")
-        if content == "1":
-            answer_scores["1"] += nomarkscore
-        elif content == "2":
-            answer_scores["2"] += nomarkscore
-        elif content == "3":
-            answer_scores["3"] += nomarkscore
-        
-        elif content.startswith("1?") or content.startswith("1apg?"):
-            answer_scores["1"] += markscore
-        elif content.startswith("2?") or content.startswith("2apg?"):
-            answer_scores["2"] += markscore
-        elif content.startswith("3?") or content.startswith("3apg?"):
-            answer_scores["3"] += markscore
-	
-        elif content in ["w1", "ww1"]:
-            answer_scores["1"] += apgscore
-        elif content in ["w2", "ww2"]:
-            answer_scores["2"] += apgscore
-        elif content in ["w3", "ww3"]:
-            answer_scores["3"] += apgscore
-        
-        elif content == "1apg":
-            answer_scores["1"] += apgscore
-        elif content == "2apg":
-            answer_scores["2"] += apgscore
-        elif content == "3apg":
-            answer_scores["3"] += apgscore
-        
-        elif content in ["not1", "n1"]:
-            answer_scores["1"] -= nomarkscore
-        elif content in ["not2", "n2"]:
-            answer_scores["2"] -= nomarkscore
-        elif content in ["not3", "n3"]:
-            answer_scores["3"] -= nomarkscore
-        
-        elif content.startswith("not1?") or content.startswith("n1?"):
-            answer_scores["1"] -= markscore
-        elif content.startswith("not2?") or content.startswith("n2?"):
-            answer_scores["2"] -= markscore
-        elif content.startswith("not3?") or content.startswith("n3?"):
-            answer_scores["3"] -= markscore
-        elif content == "+r":
-            answer_scores["1"] *= 0
-            answer_scores["2"] *= 0
-            answer_scores["3"] *= 0
-            
-       
-       
+    else: # contains not or n
+        if m[3] is None:
+            answer_scores[ind] -= nomarkscore
         else:
+            answer_scores[ind] -= markscore
+
+    return True
+
+class SelfBot(discord.Client):
+
+    def __init__(self, update_event, answer_scores):
+        super().__init__()
+        global oot_channel_id_list
+        self.oot_channel_id_list = oot_channel_id_list
+        self.update_event = update_event
+        self.answer_scores = answer_scores
+
+    async def on_ready(self):
+        print("======================")
+       
+        print("Connected to discord.")
+        print("User: " + self.user.name)
+        print("ID: " + str(self.user.id))
+
+    # @bot.event
+    # async def on_message(message):
+    #    if message.content.startswith('-debug'):
+    #         await message.channel.send('d')
+
+        def is_scores_updated(message):
+            if message.guild == None or \
+                str(message.channel.id) not in self.oot_channel_id_list:
+                return False
+
+            content = message.content.replace(' ', '').replace("'", "")
+            m = answer_pattern.match(content)
+            if m is None:
+                return False
+
+            ind = int(m[2])-1
+
+            if m[1] is None:
+                if m[3] is None:
+                    if m[4] is None:
+                        self.answer_scores[ind] += nomarkscore
+                    else: # apg
+                        if m[5] is None:
+                            self.answer_scores[ind] += apgscore
+                        else:
+                            self.answer_scores[ind] += markscore
+
+                else: # 1? ...
+                    self.answer_scores[ind] += markscore
+
+            else: # contains not or n
+                if m[3] is None:
+                    self.answer_scores[ind] -= nomarkscore
+                else:
+                    self.answer_scores[ind] -= markscore
+
+            return True
+
+        while True:
+            await self.wait_for('message', check=is_scores_updated)
+            self.update_event.set()
+
+class Bot(discord.Client):
+
+    def __init__(self, answer_scores):
+        super().__init__()
+        self.bot_channel_id_list = []
+        self.embed_msg = None
+        self.embed_channel_id = None
+        self.answer_scores = answer_scores
+
+        # embed creation
+        self.embed=discord.Embed(title="Google search", description="**__Searching google results for Confetti.__**")
+        self.embed.add_field(name="**__Option 1__**", value="0", inline=False)
+        self.embed.add_field(name="**__Option 2__**", value="0", inline=False)
+        self.embed.add_field(name="**__Option 3__**", value="0", inline=False)
+        self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
+        self.embed.set_footer(text=f"Bot made by BabluTJ_v2.20", \
+            icon_url="https://cdn.discordapp.com/attachments/600721736098643991/608901532091547668/Screenshot_20190808112708.jpg")
+        # await self.bot.add_reaction(embed,':Trivia_King_Official_Logo:')
+
+
+    async def clear_results(self):
+        for i in range(len(self.answer_scores)):
+            self.answer_scores[i]=0
+
+    async def update_embeds(self):
+
+         
+
+        one_check = ""
+        two_check = ""
+        three_check = ""
+        four_check = ""
+        
+
+        lst_scores = list(self.answer_scores)
+
+        highest = max(lst_scores)
+#         lowest = min(lst_scores)
+        answer = lst_scores.index(highest)+1
+        best=":mag:"
+         
+
+        if highest > 0:
+            if answer == 1:
+                one_check = ":one:"
+            else:
+                one_check=":x:"
+            if answer ==1:
+                best=":one::white_check_mark: "
+            if answer == 2:
+                two_check = ":two:"
+            else:
+                two_check= ":x:"
+            if answer == 2:
+                best=":two::white_check_mark: "
+            if answer == 3:
+                three_check = ":three:"
+            else:
+                three_check= ":x:"
+            if answer == 3:
+                best=":three::white_check_mark: "
+            if answer == 4:
+              four_check = ":four:"
+            else:
+                four_check=":x:"
+            if answer == 4:
+                best=":four::white_check_mark: "
+                
+#         if lowest < 0:
+#             if answer == 1:
+#                 one_check = ":question: "
+#             if answer == 2:
+#                 two_check = ":question: "
+#             if answer == 3:
+#                 three_check = ":question: "
+#             if answer == 4:
+#                 four_check = "question: "
+ 
+        self.embed.set_field_at(0, name="**__Option 1__**", value="**{0}**{1}".format(lst_scores[0], one_check))
+        self.embed.set_field_at(1, name="**__Option 2__**", value="**{0}**{1}".format(lst_scores[1], two_check))
+        self.embed.set_field_at(2, name="**__Option 3__**", value="**{0}**{1}".format(lst_scores[2],three_check))
+        self.embed.set_field_at(3, name="**__Option 4__**", value="**{0}**{1}".format(lst_scores[3],four_check))
+
+        if self.embed_msg is not None:
+            await self.embed_msg.edit(embed=self.embed)
+
+    async def on_ready(self):
+        print("==============")
+        )
+        print("Connected to discord.")
+        print("User: " + self.user.name)
+        print("ID: " + str(self.user.id))
+
+        await self.clear_results()
+        await self.update_embeds()
+        await self.change_presence(activity=discord.Game(name='With BabluTJ_v2.20'))
+
+    async def on_message(self, message):
+
+        # if message is private
+        if message.author == self.user or message.guild == None:
             return
 
-        allanswers = answer_scores.values()
-        highest = max(allanswers)
-        lowest = min(allanswers)
-        answer = list(allanswers).index(highest)+1
-        wrong = list(allanswers).index(lowest)+1
+        if message.content.lower() == "+":
+            await message.delete()
+            if BOT_OWNER_ROLE in [role.name for role in message.author.roles]:
+                self.embed_msg = None
+                await self.clear_results()
+                await self.update_embeds()
+                self.embed_msg = \
+                    await message.channel.send('',embed=self.embed)
+                self.embed_channel_id = message.channel.id
+            else:
+                await message.channel.send("**Lol You Not Have permission To Use This cmd!** :Trivia_King_Official_Logo:")
+            return
 
-async def send_embed(client, embed):
-    return await client.send_message(bot_channel_id, embed=embed)
+        if message.content.startswith('Game'):
+          if BOT_OWNER_ROLE in [role.name for role in message.author.roles]:
+           embed = discord.Embed(title="Help Commands", description="**How Run Bot**", color=0x00ff00)
+           embed.add_field(name="Supported Game", value="**Loco\nBrainbaazi\nPollbaazi\nSwag-iq\nThe-Q\nConfett-India\nCash-Quiz-Live\nHQ Tivia\n\nJeetoh Answer For `+`**", inline=False)
+           embed.add_field(name="when Question come put command", value="** `+` is command work for support game**", inline=False)
+           await message.channel.send(embed=embed)
 
-async def edit_embed(client, old_embed, new_embed):
-    return await client.edit_message(old_embed, embed=new_embed)
+        # process votes
+        if message.channel.id == self.embed_channel_id:
+            content = message.content.replace(' ', '').replace("'", "")
+            updated = await update_scores(content, self.answer_scores)
+            if updated:
+                await self.update_embeds()
 
-async def discord_send():
-    global sent_new_message
-    global answer
-    global wrong
-    global answer_scores_last
+def bot_with_cyclic_update_process(update_event, answer_scores):
 
-    await bot.wait_until_ready()
-    await asyncio.sleep(0)
+    def cyclic_update(bot, update_event):
+        f = asyncio.run_coroutine_threadsafe(bot.update_embeds(), bot.loop)
+        while True:
+            update_event.wait()
+            update_event.clear()
+            f.cancel()
+            f = asyncio.run_coroutine_threadsafe(bot.update_embeds(), bot.loop)
+            #res = f.result()
 
-    answer_scores_last = {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        
-    }
+    bot = Bot(answer_scores)
 
-    answer_message = []
-    
-    while not bot.is_closed:
-	    
-        if answer_scores != answer_scores_last:
-            
-            if wrong and answer :
-                one_cross = ""
-                two_cross = ""
-                three_cross = ""
-                one_check = ""
-                two_check = ""
-                three_check = ""
-                
-                if wrong == 1:
-                    one_cross = " :x:"
-                if wrong == 2:
-                    two_cross = " :x:"
-                if wrong == 3:
-                    three_cross = " :x:"
-                if answer == 1:
-                    one_check = " :one:"
-                if answer == 2:
-                    two_check = " :two:"
-                if answer == 3:
-                    three_check = " :three:"
-                
-                if not sent_new_message:
-                    
-                    embed=discord.Embed(title="	__***HQ US***__", description="", color=0xadd8e6)
-                    embed.add_field(name="A", value=f"{answer_scores['1']}{one_cross}{one_check}", inline=False)
-                    embed.add_field(name="B", value=f"{answer_scores['2']}{two_cross}{two_check}", inline=False)
-                    embed.add_field(name="C", value=f"{answer_scores['3']}{three_cross}{three_check}", inline=False)
-                    
-                    embed.set_footer(text=f"© MATRICKS | 7700", icon_url="")
-                   
-                    answer_message = await send_embed(bot, embed)
-                    sent_new_message = True
-                else:
-                    
-                    embed=discord.Embed(title="	__***HQ US***__", description="", color=0xadd8e6)
-                    embed.add_field(name="A", value=f"{answer_scores['1']}{one_cross}{one_check}", inline=False)
-                    embed.add_field(name="B", value=f"{answer_scores['2']}{two_cross}{two_check}", inline=False)
-                    embed.add_field(name="C", value=f"{answer_scores['3']}{three_cross}{three_check}", inline=False)
-                       
-                    embed.set_footer(text=f"© MATRICKS | 7700", icon_url="")
-                    x = await edit_embed(bot, answer_message, embed)
-                    await bot.add_reaction(x,emoji="✅")
-                    await bot.add_reaction(x,emoji="❌")
-                    
-		    
-                answer_scores_last = answer_scores.copy()
-                await asyncio.sleep(0)
-                continue
+    upd_thread = threading.Thread(target=cyclic_update, args=(bot, update_event))
+    upd_thread.start()
 
-        answer_scores_last = answer_scores.copy()
-        await asyncio.sleep(0)
+    loop = asyncio.get_event_loop()
+    loop.create_task(bot.start('NTU2NzI2ODg0MDcxODk5MTM3.XY4FiQ.s3ghL_Ga_caf7kRAQtaNKHYQsxQ'))
+    loop.run_forever()
 
-loop = asyncio.get_event_loop()
-loop.create_task(bot.start("NTU3OTEyMTY4Njc1MTQ3Nzg3.XY39_Q.Qj0WJNblaSNvCqJxMh1tHH931qw"))
-loop.create_task(selfbot.start("NDcxNzUzNjA2Nzk0NTc1ODky.XYYf5A.F3MhfgYLNctF7NkH8vMj2xYrmFo", bot=False))
 
-loop.create_task(discord_send())
-loop.run_forever()
+def selfbot_process(update_event, answer_scores):
+
+    selfbot = SelfBot(update_event, answer_scores)
+
+    loop = asyncio.get_event_loop()
+    loop.create_task(selfbot.start('NDg5MTM4MDQ4ODc0MDUzNjQ0.XY4D5A.RpgBuCsSkwT5yQhL6daYXYNb1Qo',
+                                   bot=False))
+    loop.run_forever()
+
+if __name__ == '__main__':
+
+    # running bot and selfbot in separate OS processes
+
+    # shared event for embed update
+    update_event = multiprocessing.Event()
+
+    # shared array with answer results
+    answer_scores = multiprocessing.Array(typecode_or_type='i', size_or_initializer=4)
+
+    p_bot = multiprocessing.Process(target=bot_with_cyclic_update_process, args=(update_event, answer_scores))
+    p_selfbot = multiprocessing.Process(target=selfbot_process, args=(update_event, answer_scores))
+
+    p_bot.start()
+    p_selfbot.start()
+
+    p_bot.join()
+    p_selfbot.join()
