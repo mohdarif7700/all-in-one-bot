@@ -15,66 +15,24 @@ BOT_OWNER_ROLE = 'RUNNER' # change to what you need
 
  
 oot_channel_id_list = [
-    "595635734904307742", #trivia fire loco
+    "595635734904307742", #trivia fire 2.0 loco
 	"620842231229841421", #galaxy loco
     "626992737018970112", #galaxy loco confetti
     "626458458064945164", #study iq loco 
 	"620140094476517396", #ukt loco
-	"569502072945377290",#it loco
 	"569420128794443776", #unt loco
-	"590583414541910018",#confetti study
-	"605443517069656084",#confetti tf2.0
-  "620140099346104325", #confetti ukt
-  "588070986554015764",#confetti unt
-	"523359669280833536", #hq tgl 
-  "580198028950896640", #hq trivia tribe
-	"513818250652680213", #hq trivia worl
-  "613746114016968806",#jeetoh galaxy
-  "593070663548403743", #jeetoh study
-  "595636121124208640", #jeetoh tf2.0
-  "620140095181291521",#jeetoh ukt
-  "595654063870181386", #jeetoh unt
-	"585618493093969923", # swag iq tgl
-	"446448437119025154", #sawg iq tgl
-    "558136902885048329",
-    "588739972354408532",
-    "588325679108456468",
-    "570257859850272788",
-    "588325025040564225",
-    "588748255106433045",
-	"587984504564482054",
-	"587984118059499560",
-	"586830578653855744",
-	"588739972354408532",
-	"587984347496185866",
-    "588325341563715589",
-	"590182635653824542",
-	"590182835948879872",
-	"590224806256050196",
-	"590228259937976321",
-	"590074352607690762",
-	"590074693097095168",
-	"590109407950667776",
-	"590074894738259979",
-	"591079879982841856",
-	"591067917123190804",
-	"591186950057361409",
-	"590926548174110730",
-"590583414541910018"
-	"593460363349983233",
-	"593070663548403743",
-	"593990638329004032",
-	"595654063870181386",
-	"595636121124208640",
-"619972234081075221"
+	"523359669280833536", #tgl hq
+	"459842150323060736", #tdimension hq
+	"580198028950896640" #ttribe hq
+
 ]
 
 
 answer_pattern = re.compile(r'(not|n)?([1-4]{1})(\?)?(cnf)?(\?)?$', re.IGNORECASE)
 
-apgscore = 500
-nomarkscore = 400
-markscore = 300
+apgscore = 80
+nomarkscore = 60
+markscore = 30
 
 async def update_scores(content, answer_scores):
     global answer_pattern
@@ -174,14 +132,14 @@ class Bot(discord.Client):
         self.answer_scores = answer_scores
 
         # embed creation
-        self.embed=discord.Embed(title="Google search", description="**__DEEP SEARCHING FOR RESULTS....__**")
+        self.embed=discord.Embed(title="**Google Search**", description="**__DEEP SEARCHING FOR RESULTS....__**")
         self.embed.add_field(name="**__Option 1__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 2__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 3__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
-        self.embed.set_footer(text=f"Developed By MATRICKS GAMING ", \
+        self.embed.set_footer(text=f"Developed By: **MATRICKS GAMING** ", \
             icon_url="")
-        # await self.bot.add_reaction(embed,':Trivia_King_Official_Logo:')
+        await self.bot.add_reaction(embed,':check_button_green:')
 
 
     async def clear_results(self):
@@ -242,7 +200,7 @@ class Bot(discord.Client):
 #             if answer == 4:
 #                 four_check = "question: "
  
-        self.embed.set_field_at(0, name="**__Option 1__**", value="**{0}**{1}".format(lst_scores[0], one_check))
+        self.embed.set_field_at(0, name="**__Option 1__**", value="**{0}**{1}".format(lst_scores[0], best))
         self.embed.set_field_at(1, name="**__Option 2__**", value="**{0}**{1}".format(lst_scores[1], two_check))
         self.embed.set_field_at(2, name="**__Option 3__**", value="**{0}**{1}".format(lst_scores[2],three_check))
         self.embed.set_field_at(3, name="**__Option 4__**", value="**{0}**{1}".format(lst_scores[3],four_check))
@@ -277,7 +235,7 @@ class Bot(discord.Client):
                     await message.channel.send('',embed=self.embed)
                 self.embed_channel_id = message.channel.id
             else:
-                await message.channel.send("**Lol You Not Have permission To Use This cmd!** :Trivia_King_Official_Logo:")
+                await message.channel.send("**You Not Have permission To Use This cmd!**")
             return
 
         if message.content.startswith('Game'):
