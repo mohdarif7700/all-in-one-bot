@@ -252,7 +252,7 @@ class Bot(discord.Client):
 
     async def on_ready(self):
         print("==============")
-        )
+        
         print("Connected to discord.")
         print("User: " + self.user.name)
         print("ID: " + str(self.user.id))
