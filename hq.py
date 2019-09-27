@@ -128,7 +128,7 @@ class SelfBot(discord.Client):
     #         await message.channel.send('d')
 
         def is_scores_updated(message):
-            if message.server == None or \
+            if message.guild == None or \
                 str(message.channel.id) not in self.oot_channel_id_list:
                 return False
 
@@ -264,7 +264,7 @@ class Bot(discord.Client):
     async def on_message(self, message):
 
         # if message is private
-        if message.author == self.user or message.server == None:
+        if message.author == self.user or message.guild == None:
             return
 
         if message.content.lower() == "+":
