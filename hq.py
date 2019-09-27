@@ -137,7 +137,7 @@ class Bot(discord.Client):
         self.embed.add_field(name="**__Option 2__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 3__**", value="0", inline=False)
         self.embed.add_field(name="**__Option 4__**", value="0", inline=False)
-        self.embed.set_footer(text=f"Developed By: **MATRICKS GAMING** ", \
+        self.embed.set_footer(text=f"Developed By: MATRICKS GAMING ", \
             icon_url="")
         
 
@@ -200,14 +200,14 @@ class Bot(discord.Client):
 #             if answer == 4:
 #                 four_check = "question: "
  
-        self.embed.set_field_at(0, name="**__Option 1__**", value="**{0}**{1}".format(lst_scores[0], best))
-        self.embed.set_field_at(1, name="**__Option 2__**", value="**{0}**{1}".format(lst_scores[1], two_check))
-        self.embed.set_field_at(2, name="**__Option 3__**", value="**{0}**{1}".format(lst_scores[2],three_check))
-        self.embed.set_field_at(3, name="**__Option 4__**", value="**{0}**{1}".format(lst_scores[3],four_check))
+        self.embed.set_field_at(0, name="**__Option 1__**", value="**``{0}``**{1}".format(lst_scores[0], best))
+        self.embed.set_field_at(1, name="**__Option 2__**", value="**``{0}``**{1}".format(lst_scores[1], best))
+        self.embed.set_field_at(2, name="**__Option 3__**", value="**``{0}``**{1}".format(lst_scores[2], best))
+        self.embed.set_field_at(3, name="**__Option 4__**", value="**``{0}``**{1}".format(lst_scores[3], best))
 
         if self.embed_msg is not None:
             await self.embed_msg.edit(embed=self.embed)
-            await self.bot.add_reaction(self.embed,':check_button_green:')
+            
 
     async def on_ready(self):
         print("==============")
@@ -218,6 +218,7 @@ class Bot(discord.Client):
 
         await self.clear_results()
         await self.update_embeds()
+        await self.bot.add_reaction(embed,':check_button_green:')
         #await self.change_presence(activity=discord.Game(name='With BabluTJ_v2.20'))
 
     async def on_message(self, message):
@@ -239,7 +240,7 @@ class Bot(discord.Client):
                 await message.channel.send("**You Not Have permission To Use This cmd!**")
             return
 
-        if message.content.startswith('Game'):
+        if message.content.startswith('game'):
           if BOT_OWNER_ROLE in [role.name for role in message.author.roles]:
            embed = discord.Embed(title="Help Commands", description="**How Run Bot**", color=0x00ff00)
            embed.add_field(name="Supported Game", value="**Loco\nBrainbaazi\nPollbaazi\nSwag-iq\nThe-Q\nConfett-India\nCash-Quiz-Live\nHQ Tivia\n\nJeetoh Answer For `+`**", inline=False)
