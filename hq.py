@@ -166,25 +166,25 @@ class Bot(discord.Client):
 
         if highest > 0:
             if answer == 1:
-                one_check = ":one:"
+                one_check = ":one::white_check_mark:"
             else:
                 one_check=":x:"
             if answer ==1:
                 best=":one::white_check_mark: "
             if answer == 2:
-                two_check = ":two:"
+                two_check = ":two::white_check_mark:"
             else:
                 two_check= ":x:"
             if answer == 2:
                 best=":two::white_check_mark: "
             if answer == 3:
-                three_check = ":three:"
+                three_check = ":three::white_check_mark:"
             else:
                 three_check= ":x:"
             if answer == 3:
                 best=":three::white_check_mark: "
             if answer == 4:
-              four_check = ":four:"
+              four_check = ":four::white_check_mark:"
             else:
                 four_check=":x:"
             if answer == 4:
@@ -200,10 +200,10 @@ class Bot(discord.Client):
 #             if answer == 4:
 #                 four_check = "question: "
  
-        self.embed.set_field_at(0, name="**__Option 1__**", value="**``{0}``**{1}".format(lst_scores[0], best))
-        self.embed.set_field_at(1, name="**__Option 2__**", value="**``{0}``**{1}".format(lst_scores[1], best))
-        self.embed.set_field_at(2, name="**__Option 3__**", value="**``{0}``**{1}".format(lst_scores[2], best))
-        self.embed.set_field_at(3, name="**__Option 4__**", value="**``{0}``**{1}".format(lst_scores[3], best))
+        self.embed.set_field_at(0, name="**__Option 1__**", value="**``{0}``**{1}".format(lst_scores[0], one_check))
+        self.embed.set_field_at(1, name="**__Option 2__**", value="**``{0}``**{1}".format(lst_scores[1], two_check))
+        self.embed.set_field_at(2, name="**__Option 3__**", value="**``{0}``**{1}".format(lst_scores[2], three_check))
+        #self.embed.set_field_at(3, name="**__Option 4__**", value="**``{0}``**{1}".format(lst_scores[3], four_check))
 
         if self.embed_msg is not None:
             await self.embed_msg.edit(embed=self.embed)
@@ -218,8 +218,8 @@ class Bot(discord.Client):
 
         await self.clear_results()
         await self.update_embeds()
-        await self.bot.add_reaction(embed,':check_button_green:')
-        #await self.change_presence(activity=discord.Game(name='With BabluTJ_v2.20'))
+        
+        await self.change_presence(activity=discord.Game(name='with MATricks'))
 
     async def on_message(self, message):
 
